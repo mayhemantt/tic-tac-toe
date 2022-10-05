@@ -1,0 +1,66 @@
+html,
+body {
+  width: 100%;
+  display: flex;
+}
+
+#root {
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.header .activeTurn {
+  color: chartreuse;
+}
+
+#game,
+#resultScreen {
+  margin: 1em 2em;
+}
+
+.buttonGroups {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background-color: black;
+  color: white;
+  padding: 10 20;
+  font-size: 20;
+  margin: 1em;
+}
+
+.cell {
+  display: inline-block;
+  border: 1.5px solid black;
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  overflow: hidden;
+  color: black;
+  font-size: 100px;
+  text-align: center;
+}
+#row0 .col0 {
+  border-top-left-radius: 10px;
+}
+#row0 .col2 {
+  border-top-right-radius: 10px;
+}
+#row2 .col0 {
+  border-bottom-left-radius: 10px;
+}
+
+#row2 .col2 {
+  border-bottom-right-radius: 10px;
+}
+
+.cell.winningLine {
+  color: green;
+}
