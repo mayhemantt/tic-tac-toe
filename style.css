@@ -1,5 +1,7 @@
 html,
 body {
+  background-color: black;
+  color: white;
   width: 100%;
   display: flex;
 }
@@ -8,37 +10,108 @@ body {
   margin: auto;
 }
 
-.header {
+.heading {
+  font-weight: 900;
+  font-size: 80px;
+}
+
+#modeSelectionScreen {
+  text-align: center;
+}
+
+#selectPlayerScreen {
+  text-align: center;
+}
+
+#selectPlayerScreen h3 {
+  font-size: 30px;
+}
+#modeSelectionScreen h3 {
+  font-size: 30px;
+}
+
+#modeSelectionScreen .buttonGroup {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-direction: row;
 }
 
-.header .activeTurn {
-  color: chartreuse;
+#modeSelectionScreen button {
+  margin: 0 50;
+  min-width: 220px;
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 14px 30px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #00a6ff;
+  font-size: 1.5rem;
+  font-family: 'Roboto';
+  font-weight: 100;
+  border: 1px solid #fff;
+  box-shadow: 2px 2px 5px #afe9ff;
+  transition-duration: 0.5s;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -webkit-appearance: none;
+  -moz-animation: none;
 }
 
-#game,
-#resultScreen {
-  margin: 1em 2em;
+#modeSelectionScreen button:hover {
+  color: #006398;
+  border: 1px solid #006398;
+  box-shadow: 2px 2px 20px #afe9ff;
 }
 
-.buttonGroups {
+#selectPlayerScreen .buttonGroup {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  flex-direction: row;
 }
 
-button {
-  background-color: black;
-  color: white;
-  padding: 10 20;
-  font-size: 20;
-  margin: 1em;
+#selectPlayerScreen button {
+  margin: 0 50;
+  min-width: 50px;
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 14px 20px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #ffc43f;
+  font-size: 1.5rem;
+  font-family: 'Roboto';
+  font-weight: 100;
+  border: 1px solid #fff;
+  box-shadow: 2px 2px 5px #afe9ff;
+  transition-duration: 0.5s;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -webkit-appearance: none;
+  -moz-animation: none;
+}
+
+#selectPlayerScreen button:hover {
+  color: #fff;
+  border: 1px solid #006398;
+  box-shadow: 2px 2px 20px #afe9ff;
+}
+
+#gameView {
+  text-align: center;
+}
+
+#gameView h3 {
+  font-size: 30px;
+}
+
+#gameView p,
+#resultView p {
+  margin: 1em 2em;
 }
 
 .cell {
   display: inline-block;
-  border: 1.5px solid black;
+  border: 1px solid black;
   width: 150px;
   height: 150px;
   background-color: white;
@@ -47,6 +120,7 @@ button {
   font-size: 100px;
   text-align: center;
 }
+
 #row0 .col0 {
   border-top-left-radius: 10px;
 }
@@ -56,11 +130,28 @@ button {
 #row2 .col0 {
   border-bottom-left-radius: 10px;
 }
-
 #row2 .col2 {
   border-bottom-right-radius: 10px;
 }
 
 .cell.winningLine {
   color: green;
+}
+
+@media only screen and (max-width: 740px) {
+  #modeSelectionScreen button {
+    margin: 0 50;
+    min-width: 0px;
+    font-size: 1.2rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #modeSelectionScreen .buttonGroup {
+    flex-direction: column;
+  }
+
+  #modeSelectionScreen button {
+    margin-top: 30px;
+  }
 }
