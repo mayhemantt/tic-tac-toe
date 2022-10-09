@@ -15,6 +15,12 @@ const VIEW = {
   result: 4,
 };
 
+// const winningArray =[
+//   [row: ]
+// ]
+
+let a;
+
 function Board(options) {
   state = {
     view: VIEW.question1,
@@ -194,7 +200,7 @@ function Board(options) {
     return availableMovesAndScores[0];
   }
 
-  function render() {
+  function render(row = 0, col = 0) {
     // Renders the screen according to the state.
     function getPlayerName(playerSymbol) {
       if (playerSymbol === state.players[0].symbol)
@@ -229,6 +235,10 @@ function Board(options) {
     }
 
     function htmlGame() {
+      // state.players[0].symbol = 'X';
+      // state.players[1].symbol = 'O';
+      // state.players[1].isComputer = true;
+
       let moveNumber = moveCount(state.game._gameBoard) + 1;
       let playerName =
         state.game.turn === 0
@@ -236,30 +246,22 @@ function Board(options) {
           : state.players[1].isComputer
           ? 'Computer'
           : 'Player2';
-      playerName = 'ddd';
-      moveNumber = 1;
       let htmlBefore = `<h4>move: ${moveNumber} ${htmlSpaces(
         5
       )} turn: ${playerName}</h4>`;
-
       let board = state.game._gameBoard.reduce(function (acc, curr, rowIndex) {
         return (
           acc +
           `<div id= "row${rowIndex}" class="row">${curr
-            .map(
-              (str, colIndex) =>
-                `<div class="cell col${colIndex}" data-row=${rowIndex} data-column=${colIndex}>${str}</div>`
+            .map((str, colIndex) =>
+              rowIndex == row && colIndex == col
+                ? `<div class="animate cell1 col${colIndex}" data-row=${rowIndex} data-column=${colIndex}>${str}</div>`
+                : `<div class="cell col${colIndex} symbol${str}" data-row=${rowIndex} data-column=${colIndex}>${str}</div>`
             )
             .join('')}</div>`
         );
       }, ``);
-
-      // let htmlAfter = `<h4>Score: ${htmlSpaces(1)} Player 1 - ${
-      //   state.players[0].score
-      // } ${htmlSpaces(2)} ${
-      //   state.players[1].isComputer ? 'Computer' : 'Player 2'
-      // } - ${state.players[1].score}</h4>`;
-      return `<div id='gameView'> <h3>TIC TAC TOE</h3> ${htmlBefore} <div id="board">${board}</div>  </div>`;
+      return `<div id='gameView'><h3>TIC TAC TOE</h3> ${htmlBefore} <div id="board"> ${board}</div>  </div>`;
     }
 
     function htmlGameEnd() {
@@ -275,12 +277,14 @@ function Board(options) {
         state.game._gameBoard,
         state.players[state.game.turn].symbol
       );
+      let lineClass = drawLine(winningLine);
+      console.log(lineClass);
       let resultText = 'tie';
       if (result !== RESULT.tie) resultText = getPlayerName(result) + ' Won';
 
-      let htmlBefore = `<h3>${resultText} ${htmlSpaces(
+      let htmlBefore = `<h4>${resultText} ${htmlSpaces(
         2
-      )} Click to restart </h3> `;
+      )} Click to restart </h4> `;
       let board = state.game._gameBoard.reduce(function (acc, curr, rowIndex) {
         return (
           acc +
@@ -292,25 +296,20 @@ function Board(options) {
                     arraysAreEqual(arr, [rowIndex, colIndex])
                   )
                     ? 'winningLine'
-                    : ''
+                    : `symbol${str}`
                 }"
               data-row=${rowIndex} data-column=${colIndex}>${str}</div>`
             )
             .join('')}</div>`
         );
       }, ``);
-      // let htmlAfter = `<h4>Score: ${htmlSpaces(1)} Player 1 - ${
-      //   state.players[0].score
-      // } ${htmlSpaces(2)} ${
-      //   state.players[1].isComputer ? 'Computer' : 'Player 2'
-      // } - ${state.players[1].score}</h4>`;
-      return `<div id='resultView'> ${htmlBefore} <div id="board">${board}</id>  </div>`;
+      return `<div id='resultView'> <div class="line ${lineClass}"></div> <h3>TIC TAC TOE</h3> ${htmlBefore}<div id="board">${board}</id>  </div>`;
     }
 
     let html = '';
     if (state.view == VIEW.question1) {
       html = modeSelectionScreen();
-      html = htmlGame();
+      // html = htmlGame();
     } else if (state.view == VIEW.question2) {
       html = selectPlayerScreen();
     } else if (state.view == VIEW.result) {
@@ -322,7 +321,6 @@ function Board(options) {
   }
 
   function question1Handler(ev) {
-    //
     let isComputer = !($(ev.currentTarget).attr('data') === '2players');
     state.players[1].isComputer = isComputer;
     if (isComputer) state.view = VIEW.question2;
@@ -344,8 +342,11 @@ function Board(options) {
 
     state.view = VIEW.game;
     initGame();
-    if (state.players[state.game.turn].isComputer) doComputerMove();
-
+    if (state.players[state.game.turn].isComputer) {
+      setTimeout(function () {
+        doComputerMove();
+      }, 100);
+    }
     render();
   }
 
@@ -359,6 +360,7 @@ function Board(options) {
     let symbol = state.players[state.game.turn].symbol;
     let row = parseInt($(ev.currentTarget).attr('data-row'));
     let column = parseInt($(ev.currentTarget).attr('data-column'));
+    console.log(row, column);
     executeTurn(state.game._gameBoard, { row, column }, symbol);
   }
 
@@ -377,7 +379,7 @@ function Board(options) {
 
     if (result === RESULT.incomplete) {
       state.game.turn = (state.game.turn + 1) % 2;
-      render();
+      render(move.row, move.column);
     } else {
       if (result !== RESULT.tie) {
         let winningPlayer = state.players.find((player) => {
@@ -387,13 +389,15 @@ function Board(options) {
       }
 
       state.view = VIEW.result;
-      render();
+      render(move.row, move.column);
     }
     if (
       result == RESULT.incomplete &&
       state.players[state.game.turn].isComputer
     ) {
-      doComputerMove();
+      setTimeout(function () {
+        doComputerMove();
+      }, 100);
     }
   }
 
@@ -401,15 +405,34 @@ function Board(options) {
     initGame();
     state.view = VIEW.game;
     render();
-    if (state.game.turn === 1 && state.players[1].isComputer) doComputerMove();
+    if (state.game.turn === 1 && state.players[1].isComputer) {
+      doComputerMove();
+    }
   }
 
   $(options.el).on('click', '.btn1', question1Handler);
   $(options.el).on('click', '.btn2', question2Handler);
   $(options.el).on('click', '#gameView .cell', playerMoveHandler);
+  $(options.el).on('click', '#gameView .cell1', playerMoveHandler);
   $(options.el).on('click', '#resultView', beginGame);
 
   render();
+}
+
+function drawLine(winningLine) {
+  if (winningLine[0][1] == winningLine[1][1]) {
+    return `verLine${winningLine[0][1]}`;
+  }
+
+  if (winningLine[0][0] == winningLine[1][0]) {
+    return `horLine${winningLine[0][0]}`;
+  }
+
+  if (winningLine[0][0] == winningLine[0][1]) {
+    return `diagLine1`;
+  } else {
+    return `diagLine2`;
+  }
 }
 
 const board = new Board({

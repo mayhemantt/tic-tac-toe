@@ -6,6 +6,9 @@ body {
   display: flex;
 }
 
+.board {
+  position: relative;
+}
 #root {
   margin: auto;
 }
@@ -104,6 +107,13 @@ body {
   font-size: 30px;
 }
 
+#resultView {
+  text-align: center;
+}
+#resultView h3 {
+  font-size: 30px;
+}
+
 #gameView p,
 #resultView p {
   margin: 1em 2em;
@@ -119,6 +129,37 @@ body {
   color: black;
   font-size: 100px;
   text-align: center;
+}
+
+.animate {
+  position: relative;
+  display: inline-block;
+  border: 1px solid black;
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  overflow: hidden;
+  color: black;
+  font-size: 100px;
+  text-align: center;
+  animation: slow 0.5s ease forwards;
+}
+
+@keyframes slow {
+  from {
+    font-size: 50px;
+  }
+  to {
+    font-size: 100px;
+  }
+}
+
+.symbolX {
+  color: slategrey;
+}
+
+.symbolO {
+  color: midnightblue;
 }
 
 #row0 .col0 {
@@ -155,3 +196,68 @@ body {
     margin-top: 30px;
   }
 }
+
+.line {
+  position: absolute;
+  background-color: black;
+  z-index: 1;
+  width: 5px;
+  border-top-left-radius: 20%;
+  border-top-right-radius: 20%;
+  border-bottom-left-radius: 20%;
+  border-bottom-right-radius: 20%;
+}
+
+.horLine0 {
+  height: 450px;
+  transform: translate(14em, -4em) rotate(90deg);
+}
+
+.horLine1 {
+  height: 450px;
+  transform: translate(14em, 5.5em) rotate(90deg);
+}
+
+.horLine2 {
+  height: 450px;
+  transform: translate(14em, 15em) rotate(90deg);
+}
+
+.verLine0 {
+  height: 450px;
+  transform: translate(4.5em, 6.7em) rotate(0deg);
+}
+
+.verLine1 {
+  height: 450px;
+  transform: translate(13.9em, 6.7em) rotate(0deg);
+}
+
+.verLine2 {
+  height: 450px;
+  transform: translate(23.5em, 6.7em) rotate(0deg);
+}
+
+.diagLine1 {
+  height: 500px;
+  transform: translate(15em, 5em) rotate(-45deg);
+}
+
+.diagLine2 {
+  height: 550px;
+  transform: translate(14.5em, 3em) rotate(45deg);
+}
+
+/* .horLine1{
+  height: 500px;
+  transform: translate();
+} */
+
+/* .line {
+    height: 400px;
+    position: absolute;
+    background-color: red;
+    width: 10px;
+    z-index: 1;
+    transform: translate(5vw, 8vw) rotate(90deg);
+} */
